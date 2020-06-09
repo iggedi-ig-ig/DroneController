@@ -1,26 +1,36 @@
+#!/usr/bin/python3.8
+
+# for linear algebra
 import matplotlib.pyplot as plt
+# for vector math / linear algebra
 import numpy as np
+# for computer vision
 import cv2
+# for system arguments
 import sys
 
-from itertools import chain
-import glob
+# for chaining lists
+from itertools import chain    
+# for pattern matching of files
+import glob                
+
 
 # constants
-CHECKERBOARD_PATTERN_SIZE = (7, 6)  # size of checkerboard pattern to search
+CHECKERBOARD_PATTERN_SIZE = (7, 6)
 
-OBJECT_POINT_ZERO = np.zeros((CHECKERBOARD_PATTERN_SIZE[0] * CHECKERBOARD_PATTERN_SIZE[1], 3), dtype=np.float32)
-OBJECT_POINT_ZERO[:, :2] = np.mgrid[0:CHECKERBOARD_PATTERN_SIZE[0], 0: CHECKERBOARD_PATTERN_SIZE[1]].T.reshape(-1, 2)
+OBJECT_POINT_ZERO = np.zeros((CHECKERBOARD_PATTERN_SIZE[0] * CHECKERBOARD_PATTERN_SIZE[1], 3), dtype=np.float32)        
+OBJECT_POINT_ZERO[:, :2] = np.mgrid[0:CHECKERBOARD_PATTERN_SIZE[0], 0: CHECKERBOARD_PATTERN_SIZE[1]].T.reshape(-1, 2)   
 
-TERMINATION_CRITERIA = (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)
+TERMINATION_CRITERIA = (cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_MAX_ITER, 30, 0.001)  
 
-OPTIMIZE_ALPHA = 0.25
+OPTIMIZE_ALPHA = 0.25 
 
 
 def parse_images(directory: str):
-    obj_points = []
-    img_points = []
-
+    """Load images from directory and calibrate cameras from it"""
+    obj_points = []     # points in 3D space
+    img_points = []     # mapped to 2D space of image
+    
     shape = None
 
     for image_path in chain(glob.glob(f"{directory}/*.jpg"), glob.glob(f"{directory}/*.png")):
