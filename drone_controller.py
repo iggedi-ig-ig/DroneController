@@ -93,6 +93,25 @@ class DroneController(object):
         assert image.shape == self.image_shape
         return cv2.remap(image, self.right_map_x, self.right_map_y, self.REMAP_INTERPOLATION)
 
+    # TODO: Make these work with flight controller
+    # Methods used to fly drone
+
+    def rotate_yaw(self, speed: float):
+        """Rotate drone around UP vector"""
+        raise NotImplementedError()
+
+    def rotate_pitch(self, speed: float):
+        """Rotate drone around LEFT vector"""
+        raise NotImplementedError()
+
+    def rotate_roll(self, speed: float):
+        """Rotate drone around FORWARD vector"""
+        raise NotImplementedError()
+
+    def set_throttle(self, throttle: float):
+        """Set throttle of drone"""
+        raise NotImplementedError()
+
 
 if __name__ == '__main__':
     drone_controller = DroneController('0.0.0.0:1234', '0.0.0.0:1234', (300, 300))
