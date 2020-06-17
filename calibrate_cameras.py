@@ -125,6 +125,7 @@ def calibrate_cameras(left_path: str, right_path: str):
                         right_map_x=map_x_r, right_map_y=map_y_r, right_roi=roi_r)
 
     print(f"Saved configuration to file: {sys.argv[3]}")
+    return map_x_l, map_y_l, map_y_l, map_y_r
 
 
 if __name__ == '__main__':
