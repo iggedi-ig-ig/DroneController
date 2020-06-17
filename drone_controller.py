@@ -18,7 +18,10 @@ class DroneController(object):
     def __init__(self, rtsp_domain_left: str, rtsp_domain_right: str, image_shape: tuple):
         # domains to rtsp stream
         self.rtsp_domain_left = rtsp_domain_left
+        self.rtsp_stream_left = cv2.VideoCapture(self.rtsp_stream_left)
+
         self.rtsp_domain_right = rtsp_domain_right
+        self.rtsp_stream_right = cv2.VideoCapture(self.rtsp_stream_right)
 
         # image shape
         self.image_shape = image_shape
@@ -92,6 +95,18 @@ class DroneController(object):
         """
         assert image.shape == self.image_shape
         return cv2.remap(image, self.right_map_x, self.right_map_y, self.REMAP_INTERPOLATION)
+
+    def get_current_depth(self):
+        """Returns a depth map from current data of the RTSP streams"""
+        ret_left, img_left = self.rtsp_stream_left.read()
+        ret_right, img_right = self.rtsp_stream_right.read()
+
+        if ret_left and ret_right:
+            rectified_left = self.rectify_image_left(img_left)
+            rectified_right = self.rectify_image_right(img_right)
+
+            return self.compute_depth_map(rectified_left, rectified_right)
+        return None
 
     # TODO: Make these work with flight controller
     # Methods used to fly drone
